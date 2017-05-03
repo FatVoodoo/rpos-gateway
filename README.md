@@ -1,35 +1,27 @@
 # rpos-gateway
-Raspberry Pi Onvif Gateway
+Raspberry Pi Onvif Gateway based on (rpos)[http://breeeze.github.io/rpos]
 
-Node.js based Onvif Soap service. (http://www.onvif.org) 
+Node.js based (ONVIF)[http://www.onvif.org] SOAP service.
 
-Initial goal is to provide a Onvif Media service which is compatible with Synology Surveillance Station.
-This allows the Pi to be used as a surveillance camera without the need for adding any custom camera files to your Synology NAS.
-First demo video @ https://youtu.be/ZcZbF4XOH7E
+Providing a ONVIF Media service which is compatible with Synology Surveillance Station / QNAP NAS, "tunneling" any existing RTSP stream.
 
-This version uses a patched version of the "node-soap" v0.80 library (https://github.com/vpulim/node-soap/releases/tag/v0.8.0) located @ https://github.com/BreeeZe/node-soap
+## How-To Install:
 
-#Features:
+([Beginner’s Guide to](http://thisdavej.com/beginners-guide-to-installing-node-js-on-a-raspberry-pi/)) Installing Node.js on a Raspberry Pi:
 
-- Streams H264 video over rtsp
-- Camera control (resolution and framerate) through Onvif
-- Set other camera options through a web interface.
+```bash
+curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+sudo apt-get install nodejs
+```
 
-#How to develop:
+Download the latest rpos-gateway release from GitHub:
 
-npm install
-gulp default
-gulp release
+```bash
+wget https://github.com/BreeeZe/rpos/releases/download/0.2.0/rpos-gateway-0.2.0.zip
+unzip rpos-gateway-0.2.0.zip -d rpos-gateway-0.2.0
+cd rpos-gateway-0.2.0
+```
 
-#Camera settings
-You can set camera settings by browsing to : http://CameraIP:Port/
-These settings are then saved in a file called v4l2ctl.json and are persisted on rpos restart.
+Set the `StreamMediaUri` (RTSP tunnel URI), `IpAddress`, `ServicePort` and optionally other options in the `rposConfig.json` file.
 
-#Known Issues
-- 1920x1080 can cause hangs and crashes.
-
-#ToDo's
-- Add authentication
-- Add MJPEG
-- Implement more ONVIF calls
-- and more...
+Start rpos-gateway by running `node rpos-gateway.js`
