@@ -15,7 +15,7 @@ sudo apt-get install nodejs
 Download the latest rpos-gateway release from GitHub:
 
 ```bash
-wget https://github.com/BreeeZe/rpos/releases/download/0.2.0/rpos-gateway-0.2.0.zip
+wget https://github.com/kristian/rpos-gateway/releases/download/0.2.0/rpos-gateway-0.2.0.zip
 unzip rpos-gateway-0.2.0.zip -d rpos-gateway-0.2.0
 cd rpos-gateway-0.2.0
 ```
