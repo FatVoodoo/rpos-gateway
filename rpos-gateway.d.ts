@@ -1,16 +1,15 @@
 ///<reference path="./lib/extension.ts"/>
+
 interface rposConfig {
+	StreamMediaUri: string;
   NetworkAdapters: string[];
   IpAddress: string;
   ServicePort: number;
   RTSPPort: number;
-  RTSPName: string;
-  RTSPServer: number;
   MulticastEnabled: boolean;
-  RTSPMulticastName : string;
-  MulticastAddress: string;
-  MulticastPort: number;
   DeviceInformation: DeviceInformation;
+  CameraOptions: CameraOptions;
+  CameraSettings: CameraSettings;
   logLevel: number;
   logSoapCalls: Boolean;
 }
@@ -63,16 +62,28 @@ interface Resolution {
   Width: number;
   Height: number;
 }
-interface CameraSettingsParameter {
+interface CameraSettings {
   gop: number; //keyframe every X sec.
+  forceGop: boolean; // use iframe interval setting from v4l2ctl.json instead of Onvif
   resolution: Resolution;
   framerate: number;
   bitrate: number;
-  profile: string;
+  profile: H264Profile;
   quality: number;
 }
-interface CameraSettingsBase {
-  forceGop: boolean; // Use iframe interval setting from v4l2ctl.json instead of Onvif
-  resolution: Resolution;
-  framerate: number;
+
+interface Range {
+	Min: number;
+	Max: number;
+}
+interface CameraOptions {
+	resolutions: Resolution[];
+	framerates: number[];
+	bitrates: number[];
+	govrange: Range;
+	profiles: H264Profile[];
+}
+interface H264Profile {
+	value: number;
+	desc: string;
 }

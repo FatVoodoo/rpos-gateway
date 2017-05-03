@@ -1,6 +1,8 @@
 {
   "name": "rpos",
-  "dependencies": {},
+  "dependencies": {
+    "minimist": "registry:dt/minimist#1.2.0+20161224101431"
+  },
   "devDependencies": {},
   "ambientDependencies": {
     "body-parser": "github:DefinitelyTyped/DefinitelyTyped/body-parser/body-parser.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd",

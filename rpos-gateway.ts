@@ -1,4 +1,4 @@
-﻿/// <reference path="./rpos.d.ts"/>
+﻿/// <reference path="./rpos-gateway.d.ts"/>
 /// <reference path="./typings/main.d.ts"/>
 
 /*
@@ -28,18 +28,34 @@ require("./lib/extension");
 
 import http = require("http");
 import express = require("express");
+import minimist = require("minimist");
 import { Utils } from "./lib/utils";
-import Camera = require("./lib/camera");
 import DeviceService = require("./services/device_service");
 import MediaService = require("./services/media_service");
 import DiscoveryService = require("./services/discovery_service");
 
 var utils = Utils.utils;
+var argv = minimist(process.argv.slice(2));
 let pjson = require("./package.json");
-let config = <rposConfig>require("./rposConfig.json");
+
+let config: rposConfig;
+var configPath = argv["config"]||"rposConfig.json";
+if (configPath[0]!='/') {
+	configPath = "./"+configPath;
+}
+
+try {
+	config = <rposConfig>require(configPath);
+} catch(e) {
+	if (e.code !== 'MODULE_NOT_FOUND') {
+		throw e;
+	}
+	
+	utils.log.error("Could not find configuration file at %s", configPath);
+	process.exit(1);
+}
 
 utils.log.level = <Utils.logLevel>config.logLevel;
-
 config.DeviceInformation.SerialNumber = utils.getSerial();
 config.DeviceInformation.FirmwareVersion = pjson.version;
 utils.setConfig(config);
@@ -52,9 +68,8 @@ for (var i in config.DeviceInformation) {
 let webserver = express();
 let httpserver = http.createServer(webserver);
 
-let camera = new Camera(config, webserver);
 let device_service = new DeviceService(config, httpserver);
-let media_service = new MediaService(config, httpserver, camera);
+let media_service = new MediaService(config, httpserver);
 let discovery_service = new DiscoveryService(config);
 
 device_service.start();

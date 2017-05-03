@@ -1,16 +1,19 @@
 {
-  "name": "rpos",
+  "name": "rpos-gateway",
   "version": "0.2.0",
-  "description": "rpos",
-  "main": "rpos.js",
+  "description": "rpos-gateway",
+  "main": "rpos-gateway.js",
   "license": "MIT",
   "author": {
-    "name": "Jeroen Versteege",
-    "email": "jeroen@versteege.com"
+    "name": "Kristian Kraljic",
+    "email": "kris@kra.lc"
   },
+  "contributors": [
+    "Jeroen Versteege <jeroen@versteege.com>"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/BreeeZe/rpos.git"
+    "url": "https://github.com/kristian/rpos-gateway.git"
   },
   "dependencies": {
     "soap": "git://github.com/BreeeZe/node-soap.git",
@@ -18,8 +21,8 @@
     "express": "4.12.3",
     "body-parser": "1.12.3",
     "node-uuid": "1.4.7",
-    "xml2js":"0.4.16"
-    
+    "xml2js":"0.4.16",
+    "minimist":"1.2.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

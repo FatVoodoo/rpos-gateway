@@ -7,7 +7,7 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence'),
     sourcemaps = require('gulp-sourcemaps')
 
-var version = 'rpos-' + pkg.version;
+var version = 'rpos-gateway-' + pkg.version;
 var releaseDir = 'release/' + version;
 
 //Default task: runs the typings and compile task, started when running "gulp" without any parameters.
@@ -34,7 +34,7 @@ gulp.task('typings', function (done) {
 });
 
 //Release task: generates a release package.
-gulp.task('release', ['copy-release-js', 'copy-release-bin', 'copy-release-modules', 'copy-release-views',
+gulp.task('release', ['copy-release-js', 'copy-release-modules', 'copy-release-views',
     'copy-release-web', 'copy-release-wsdl', 'copy-release-config'], function () {
         return gulp.src([releaseDir + '/**/*', releaseDir + '/*.zip'])
             .pipe(zip(version + '.zip'))
@@ -50,10 +50,6 @@ gulp.task('copy-release-config', function () {
     return gulp.src('rposConfig.release.json')
         .pipe(rename("rposConfig.json"))
         .pipe(gulp.dest(releaseDir));
-});
-gulp.task('copy-release-bin', function () {
-    return gulp.src('bin/*')
-        .pipe(gulp.dest(releaseDir + '/bin'));
 });
 gulp.task('copy-release-modules', function () {
     return gulp.src(['node_modules/**/*', '!node_modules/gulp*/**', '!node_modules/gulp**'])

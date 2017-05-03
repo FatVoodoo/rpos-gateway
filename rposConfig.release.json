@@ -1,19 +1,92 @@
-﻿{
-  "NetworkAdapters" : ["awdl0","eth0", "en0"], 
+﻿{  
+  "StreamMediaUri" : "rtsp://192.168.1.15:554/onvif1",
+  "NetworkAdapters" : [  
+    "awdl0",
+    "eth0",
+    "en0"
+  ],
   "IpAddress" : "192.168.1.15",
   "ServicePort" : 8081,
   "RTSPPort" : 8554,
-  "RTSPName" : "h264",
-  "MulticastEnabled"  : false,
-  "RTSPMulticastName" : "h264m",
-  "MulticastAddress"  : "224.0.0.1",
-  "MulticastPort"     : "10001",
-  "RTSPServer" : 1, "RtspServerComment" : "## Select RTSP Server > 1:RPOS RTSP Server 2:V4L2 RTSP Server by mpromonet (auto selected if MulticastEnabled=true)",
-  "DeviceInformation" : {
+  "MulticastEnabled" : false,
+  "DeviceInformation" : {  
     "Manufacturer" : "Raspberry Pi",
     "Model" : "2 B",
     "HardwareId" : ""
   },
-  "logLevel" : 3, "logLevelComment": "## LogLevels are > 1:Error 2:Warning 3:Info 4:Debug",
+  "CameraOptions" : {  
+    "resolutions" : [  
+      {  
+        "Width" : 640,
+        "Height" : 480
+      },
+      {  
+        "Width" : 800,
+        "Height" : 600
+      },
+      {  
+        "Width" : 1024,
+        "Height" : 768
+      },
+      {  
+        "Width" : 1280,
+        "Height" : 1024
+      },
+      {  
+        "Width" : 1280,
+        "Height" : 720
+      },
+      {  
+        "Width" : 1920,
+        "Height" : 1080
+      }
+    ],
+    "framerates" : [  
+      2,
+      5,
+      10,
+      15,
+      25,
+      30
+    ],
+    "bitrates" : [  
+      250,
+      500,
+      1000,
+      2500,
+      5000,
+      7500,
+      10000,
+      12500,
+      15000,
+      17500
+    ],
+    "govrange" : {
+      "Min": 0,
+      "Max": 2147483647
+    },
+    "profiles" : [
+      { "value" : 0, "desc" : "Baseline" },
+      { "value" : 1, "desc" : "Constrained Baseline" },
+      { "value" : 2, "desc" : "Main" },
+      { "value" : 4, "desc" : "High" }
+    ]
+  },
+  "CameraSettings" : {
+    "gop" : 60,
+    "forceGop" : true,
+    "resolution" : {  
+      "Width" : 1280,
+      "Height" : 720
+    },
+    "framerate" : 25,
+    "bitrate" : 10000000,
+    "profile" : {
+      "value" : 4,
+      "desc": "High"
+    },
+    "quality" : 30
+  },
+  "logLevel" : 3, "logLevelComment" : "## LogLevels are > 1:Error 2:Warning 3:Info 4:Debug",
   "logSoapCalls" : false
 }

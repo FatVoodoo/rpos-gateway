@@ -1,4 +1,4 @@
-///<reference path="../rpos.d.ts"/>
+///<reference path="../rpos-gateway.d.ts"/>
 
 Date.prototype.stdTimezoneOffset = function() {
 	var jan = new Date(this.getFullYear(), 0, 1);

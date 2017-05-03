@@ -1,5 +1,5 @@
-# rpos
-Raspberry Pi Onvif Server
+# rpos-gateway
+Raspberry Pi Onvif Gateway
 
 Node.js based Onvif Soap service. (http://www.onvif.org) 
 
@@ -15,35 +15,11 @@ This version uses a patched version of the "node-soap" v0.80 library (https://gi
 - Camera control (resolution and framerate) through Onvif
 - Set other camera options through a web interface.
 
-#How to:
+#How to develop:
 
-Install the live555 library to stream h264 video over rtsp [ source http://forum.synology.com/enu/viewtopic.php?f=82&t=69224&start=15#p289293 ] :
-
-	*login to your pi via ssh
-	cd /home/pi/
-	wget http://www.live555.com/liveMedia/public/live555-latest.tar.gz
-	tar xvzf live555-latest.tar.gz
-	cd live
-	./genMakefiles linux
-	make
-	#delete sources
-	cd ..
-	rm live -r -f
-
-Install nodejs on your pi (http://weworkweplay.com/play/raspberry-pi-nodejs/):
-
-	wget http://node-arm.herokuapp.com/node_latest_armhf.deb
-	sudo dpkg -i node_latest_armhf.deb
-
-Download rpos release from github to your pi
-	
-	wget https://github.com/BreeeZe/rpos/releases/download/0.1.0/rpos-0.1.0.zip
-	unzip rpos-0.1.0.zip
-	cd rpos-0.1.0
-
-Optionaly set the service port or other options in rposConfig.json
-
-Then you start rpos by running "sudo node rpos.js"
+npm install
+gulp default
+gulp release
 
 #Camera settings
 You can set camera settings by browsing to : http://CameraIP:Port/

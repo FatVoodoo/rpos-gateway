@@ -1,24 +1,20 @@
 ///<reference path="../typings/main.d.ts" />
-///<reference path="../rpos.d.ts" />
+///<reference path="../rpos-gateway.d.ts" />
 import fs = require("fs");
 import util = require("util");
 import SoapService = require('../lib/SoapService');
 import { Utils }  from '../lib/utils';
 import url = require('url');
 import { Server } from 'http';
-import Camera = require('../lib/camera');
-import { v4l2ctl } from '../lib/v4l2ctl';
 var utils = Utils.utils;
 
 class MediaService extends SoapService {
   media_service: any;
-  camera: Camera;
 
-  constructor(config: rposConfig, server: Server, camera: Camera) {
+  constructor(config: rposConfig, server: Server) {
     super(config, server);
     this.media_service = require('./stubs/media_service.js').MediaService;
 
-    this.camera = camera;
     this.serviceOptions = {
       path: '/onvif/media_service',
       services: this.media_service,
@@ -61,17 +57,16 @@ class MediaService extends SoapService {
   }
 
   started() {
-    this.camera.startRtsp();
+    // nothing to do here
   }
 
   extendService() {
     var port = this.media_service.MediaService.Media;
 
-    var cameraOptions = this.camera.options;
-    var cameraSettings = this.camera.settings;
-    var camera = this.camera;
-
-    var h264Profiles = v4l2ctl.Controls.CodecControls.h264_profile.getLookupSet().map(ls=>ls.desc);
+    let cameraOptions = this.config.CameraOptions;
+    let cameraSettings = this.config.CameraSettings;
+	  
+    var h264Profiles = cameraOptions.profiles;
     h264Profiles.splice(1, 1);
 
     var videoConfigurationOptions = {
@@ -81,10 +76,7 @@ class MediaService extends SoapService {
       },
       H264: {
         ResolutionsAvailable: cameraOptions.resolutions,
-        GovLengthRange: {
-          Min: v4l2ctl.Controls.CodecControls.h264_i_frame_period.getRange().min,
-          Max: v4l2ctl.Controls.CodecControls.h264_i_frame_period.getRange().max
-        },
+        GovLengthRange: cameraOptions.govrange,
         FrameRateRange: {
           Min: cameraOptions.framerates[0],
           Max: cameraOptions.framerates[cameraOptions.framerates.length - 1]
@@ -95,10 +87,7 @@ class MediaService extends SoapService {
       Extension: {
         H264: {
           ResolutionsAvailable: cameraOptions.resolutions,
-          GovLengthRange: {
-            Min: v4l2ctl.Controls.CodecControls.h264_i_frame_period.getRange().min,
-            Max: v4l2ctl.Controls.CodecControls.h264_i_frame_period.getRange().max
-          },
+          GovLengthRange: cameraOptions.govrange,
           FrameRateRange: {
             Min: cameraOptions.framerates[0],
             Max: cameraOptions.framerates[cameraOptions.framerates.length - 1]
@@ -124,15 +113,15 @@ class MediaService extends SoapService {
         Width: cameraSettings.resolution.Width,
         Height: cameraSettings.resolution.Height
       },
-      Quality: v4l2ctl.Controls.CodecControls.video_bitrate.value ? 1 : 1,
+      Quality: cameraSettings.bitrate ? 1 : 0,
       RateControl: {
         FrameRateLimit: cameraSettings.framerate,
         EncodingInterval: 1,
-        BitrateLimit: v4l2ctl.Controls.CodecControls.video_bitrate.value / 1000
+        BitrateLimit: cameraSettings.bitrate / 1000
       },
       H264: {
-        GovLength: v4l2ctl.Controls.CodecControls.h264_i_frame_period.value,
-        H264Profile: v4l2ctl.Controls.CodecControls.h264_profile.desc
+        GovLength: cameraSettings.gop,
+        H264Profile: cameraSettings.profile.desc
       },
       Multicast: {
         Address: {
@@ -218,9 +207,7 @@ class MediaService extends SoapService {
 
       var GetStreamUriResponse = {
         MediaUri: {
-          Uri: (args.StreamSetup.Stream == "RTP-Multicast" && this.config.MulticastEnabled ? 
-            `rtsp://${utils.getIpAddress() }:${this.config.RTSPPort}/${this.config.RTSPMulticastName}` :
-            `rtsp://${utils.getIpAddress() }:${this.config.RTSPPort}/${this.config.RTSPName}`),
+          Uri: this.config.StreamMediaUri,
           InvalidAfterConnect: false,
           InvalidAfterReboot: false,
           Timeout: "PT30S"
@@ -283,8 +270,7 @@ class MediaService extends SoapService {
         quality: args.Configuration.Quality instanceof Object ? 1 : args.Configuration.Quality,
         resolution: args.Configuration.Resolution
       };
-      camera.setSettings(settings);
-
+      
       var SetVideoEncoderConfigurationResponse = {};
       return SetVideoEncoderConfigurationResponse;
     };

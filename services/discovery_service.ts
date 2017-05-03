@@ -1,4 +1,4 @@
-﻿/// <reference path="../rpos.d.ts"/>
+﻿/// <reference path="../rpos-gateway.d.ts"/>
 /// <reference path="../typings/main.d.ts"/>
 
 /*
@@ -83,7 +83,7 @@ class DiscoveryService {
               <d:ProbeMatches>
                 <d:ProbeMatch>
                   <wsa:EndpointReference>
-                    <wsa:Address>urn:uuid:${utils.uuid5(utils.getIpAddress() + this.config.ServicePort + this.config.RTSPPort)}</wsa:Address>
+                    <wsa:Address>urn:uuid:${utils.uuid5(utils.getIpAddress() + this.config.ServicePort + this.config.RTSPPort + this.config.StreamMediaUri)}</wsa:Address>
                   </wsa:EndpointReference>
                   <d:Types>dn:NetworkVideoTransmitter</d:Types>
                   <d:Scopes>
