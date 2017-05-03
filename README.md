@@ -1,7 +1,5 @@
 # rpos-gateway
-Raspberry Pi Onvif Gateway based on [rpos](http://breeeze.github.io/rpos)
-
-Node.js based [ONVIF](http://www.onvif.org) SOAP service.
+Raspberry Pi Onvif Gateway based on [rpos](http://breeeze.github.io/rpos). Node.js based [ONVIF](http://www.onvif.org) SOAP service.
 
 Providing a ONVIF Media service which is compatible with Synology Surveillance Station / QNAP NAS, "tunneling" any existing RTSP stream.
 
