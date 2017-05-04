@@ -35,7 +35,7 @@ import MediaService = require("./services/media_service");
 import DiscoveryService = require("./services/discovery_service");
 
 var utils = Utils.utils;
-var argv = minimist(process.argv.slice(2));
+var argv = minimist(process.argv.slice(2), { "default" : { discovery : true } });
 let pjson = require("./package.json");
 
 let config: rposConfig;
@@ -74,4 +74,6 @@ let discovery_service = new DiscoveryService(config);
 
 device_service.start();
 media_service.start();
-discovery_service.start();
+if(argv["discovery"]) {
+	discovery_service.start();
+}
